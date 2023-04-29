@@ -10,21 +10,26 @@ const Header = () => {
         +65 6797 9688
         </div>
         <div style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'borderBottomWidth': '2px'}}>
-            <div style={{'display': 'flex', 'alignItems': 'center'}}>
-            <Link href='/'>
-                <img className='icon' src='https://storage.googleapis.com/imgez/eezee-logos/logo-on-white-nopadding.svg' alt='Eezee logo' />
-            </Link>
-            <Link style={{'paddingLeft': '5%', 'color': 'blue', 'fontSize': '12px'}} href='/all-brands'>
-                View All Brands
-            </Link>
+            <div style={{'flexDirection': 'column', 'justifyContent': 'space-between', 'alignItems': 'center', 'height': '100px', 'padding-left':'80px'}}>
+                <div style={{'display': 'flex', 'alignItems': 'center'}}>
+                    <Link href='/'>
+                        <img className='icon' src='https://storage.googleapis.com/imgez/eezee-logos/logo-on-white-nopadding.svg' alt='Eezee logo' />
+                    </Link>
+                </div>
+                <div style={{'display': 'flex', 'alignItems': 'center'}}>
+                    <Link style={{'color': 'blue', 'fontSize': '12px', 'textAlign': 'center', 'padding-left': '5%', 'padding-top':'5%'}} href='/all-brands'>
+                        View All Brands
+                    </Link>
+                </div>
             </div>
-            <div style={{'display': 'flex', 'alignItems': 'center'}}>
-            <Link href='/shopping-cart'>
-                <img className='cartIcon' src='https://storage.googleapis.com/imgez/icons/cart-icon.svg' alt='Shopping cart icon' />
-            </Link>
-            <span style={{'paddingLeft': '10px'}}>0 items</span>
+            <div style={{'display': 'flex', 'alignItems': 'center', 'padding-right':'80px'}}>
+                <Link href='/shopping-cart'>
+                    <img className='cartIcon' src='https://storage.googleapis.com/imgez/icons/cart-icon.svg' alt='Shopping cart icon' />
+                </Link>
+                <span style={{'paddingLeft': '10px'}}>0 items</span>
             </div>
         </div>
+
         <style jsx>{`
             .barImg {
                 height: 15px;

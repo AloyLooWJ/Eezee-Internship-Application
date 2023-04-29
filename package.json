@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-qty-picker": "^1.0.6",
+    "react-slideshow-image": "^4.2.1"
+  }
+}

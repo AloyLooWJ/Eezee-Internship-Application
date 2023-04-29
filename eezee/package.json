@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "autoprefixer": "10.4.14",
+    "mdb-react-ui-kit": "^6.0.0",
+    "mdbreact": "^5.2.0",
     "next": "13.3.1",
     "postcss": "8.4.23",
     "react": "18.2.0",

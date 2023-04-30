@@ -1,4 +1,3 @@
-import Header from '../components/header-bar';
 import useSWR from 'swr';
 import { useState } from 'react';
 const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -31,14 +30,13 @@ export default function AllProduct(){
 
     return (
     <div>
-        <Header />
         <div className="col-container">
             <div className="col">
                 <h1><b>Products</b></h1>
-                <p>10 results</p>
+                <p>{displayedProducts.length} results</p>
             </div>
             <div className="col2">
-                <h2>Page 1 of about 10 results</h2>
+                <h2>Page 1 of about {displayedProducts.length} results</h2>
                 <div className="btn-group">
                     <button
                         className={selectedButton === 'relevance' ? 'selected' : ''}

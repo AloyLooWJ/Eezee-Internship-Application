@@ -1,9 +1,10 @@
-import Header from "@/components/header-bar";
 import QuantityCounter from "@/components/quantity-counter";
 import { useRouter } from 'next/router'
 import useSWR from 'swr';
-import { Slide, Indicators } from 'react-slideshow-image';
+import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
+import { useContext, useState } from "react";
+import { CartContext } from '@/components/cart-context';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -11,60 +12,72 @@ export default function Product(){
   const router = useRouter()
   const {product} = router.query
   const { data: products, error: productError } = useSWR('/api/product-data', fetcher);
-  
+  const { updateCartData  } = useContext(CartContext);
+  const [quantity, setQuantity] = useState(1);
+
   if (productError) return <div>Failed to load</div>;
   if (!products) return <div>Loading...</div>;
   
   const productData = products.find(p => p.id === product);
-  console.log(productData);
+
+  const handleQuantityChange = (newQuantity) => {
+    setQuantity(newQuantity);
+  }
+
+  const submitAddToCart = (e) => {
+    e.preventDefault();
+    const data = {
+      product: productData.title,
+      productImg: productData.images[0].url,
+      currencySymbol: productData.currencySymbol,
+      unitPrice: productData.lowPrice,
+      quantity: quantity,
+      totalPrice: parseFloat(quantity * productData.lowPrice).toFixed(2)
+    }
+    updateCartData(prevData => [...prevData, data]);
+  };
 
   return (
     <div>
-      <Header></Header>
       <div className="content">
-        {productData && (
-          <div className="cards-wrapper">
-            <div className="card">
-              <p className="productTitle"><b>{productData.title}</b></p>
-              <div className="product-info">
-                <div className="brand-img-container">
-                  <img className="brandImg" src={productData.metadata.brandImage} alt={`Brand Image`} />
-                </div>
-                <div className="product-details">
-                  <p>Model: {productData.metadata.model}</p>
-                  <p>Brand: {productData.metadata.brand}</p>
-                </div>
+        <div className="cards-wrapper">
+          <div className="card">
+            <p className="productTitle"><b>{productData.title}</b></p>
+            <div className="product-info">
+              <div className="brand-img-container">
+                <img className="brandImg" src={productData.metadata.brandImage} alt="Brand Image" />
               </div>
-              <div>
+              <div className="product-details">
+                <p>Model: {productData.metadata.model}</p>
+                <p>Brand: {productData.metadata.brand}</p>
+              </div>
+            </div>
+            <div>
               {productData.images.length === 1 ? (
-                <img src={productData.images[0].url} alt={`Product Image 0`} />
+              <img src={productData.images[0].url} alt="Product Image 0" />
               ) : (
-                <Slide duration={100000}>
-                  {productData.images.map((image, index) => (
-                    <div className="each-slide" key={`slide-${index}`}>
-                      <img src={image.url} alt={`Product Image ${index}`} />
-                    </div>
-                  ))}
-                </Slide>
+              <Slide duration={100000}>
+                {productData.images.map((image, index) => (
+                <div className="each-slide" key={`slide-${index}`}>
+                  <img src={image.url} alt={`Product Image ${index}`} />
+                </div>
+                ))}
+              </Slide>
               )}
-
-              </div>
-              <p className="productDescription"><b>Product Description:</b></p>
-              <span dangerouslySetInnerHTML={{__html: productData.descriptionHtml}}></span>
             </div>
-            <div className="card2">
-                <div className="productPrice"><b>{productData.lowPricePretty}</b></div>
-                {/* <li>VIP Price: {productData.vipPriceFlag ? 'Yes' : 'No'}</li>
-                <li>Bulk Discount: {productData.bulkDiscountFlag ? 'Yes' : 'No'}</li>
-                <li>MOQ: {productData.moq}</li>
-                <li>High Price: {productData.highPricePretty}</li> */}
-                <div>Quantity:</div>
-                <QuantityCounter/>
-                <button className="add-to-cart-btn">Add to Cart</button>
-                <button className="add-to-favourites-btn">Add to Favourites</button>
-            </div>
+            <p className="productDescription"><b>Product Description:</b></p>
+            <span dangerouslySetInnerHTML={{__html: productData.descriptionHtml}}></span>
           </div>
-        )}
+          <div className="card2">
+            <div className="productPrice"><b>{productData.lowPricePretty}</b></div>
+            <div>Quantity:</div>
+            <QuantityCounter quantity={quantity} onQuantityChange={handleQuantityChange}/>
+            <div className="totalPrice">Total Price: </div>
+            <div className="productPrice" style={{'font-size': '30px'}}>{productData.currencySymbol}{parseFloat(quantity * productData.lowPrice).toFixed(2)}</div>
+            <button className="addToCartBtn" onClick={submitAddToCart}>Add to Cart</button>
+            <button className="addToFavBtn">Add to Favourites</button>
+          </div>
+        </div>
       </div>
       <style jsx>{`
             .content {
@@ -89,7 +102,7 @@ export default function Product(){
             }
             .card2 {
               background: white;
-              height: 270px;
+              height: 360px;
               width: 439px;
               padding: 30px;
               border: 1px solid #ccc;
@@ -122,12 +135,12 @@ export default function Product(){
               border-bottom: 1px solid #ccc;
             }
             .productPrice {
-              font-size:30px;
+              font-size:35px;
               color: #2A64DB;
               border-bottom: 1px solid #ccc;
               border-style: dashed;
             }
-            .add-to-cart-btn {
+            .addToCartBtn {
               background-color: #2A64DB;
               width: 391px;
               color: white;
@@ -139,7 +152,7 @@ export default function Product(){
               margin-top: 10px;
               margin-bottom: 10px;
             }
-            .add-to-favourites-btn {
+            .addToFavBtn {
               background-color: white;
               width: 391px;
               color: #2A64DB;
@@ -199,6 +212,9 @@ export default function Product(){
 
             .react-slideshow-pagination > div.active {
               background-color: #0052cc;
+            }
+            .totalPrice {
+              padding-top: 10px;
             }
         `}</style>
     </div>

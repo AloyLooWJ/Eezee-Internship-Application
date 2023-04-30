@@ -1,5 +1,5 @@
-import Header from '../components/header-bar';
 import useSWR from 'swr';
+import Link from 'next/link';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -10,7 +10,6 @@ export default function Home() {
   if (!brands||!products) return <div>Loading...</div>;
   return (
     <div>
-      <Header />
       <div className='content'>
         <img style={{'display': 'block','margin-left': 'auto','margin-right': 'auto', 'padding-top': '30px'}} src="https://api.eezee.sg/image/resize?height=385&width=984&url=https://storage.googleapis.com/eezee-banner-images/4lIFLboZl0EEIGm1t3W25m.jpg&resizeStrategy=cover"></img>
         
@@ -20,7 +19,7 @@ export default function Home() {
             <b>Featured Brands</b>
             <h3>Browse the full catalog of brands today
               <div className='ViewMore'>
-                <a href='/all-brands'>View More &gt;</a>
+                <Link href='/all-brands'>View More &gt;</Link>
               </div>
             </h3>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'left', textAlign: 'center' }}>
@@ -46,12 +45,13 @@ export default function Home() {
           <b>Our Products</b>
           <h3>Trusted by the best companies in Asia
             <div className='ViewMore'>
-              <a href='/all-product'>View More &gt;</a>
+              <Link href='/all-product'>View More &gt;</Link>
             </div>
           </h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'left', textAlign: 'center' }}>
             {products.map(product => (
-              <a href={`/product/${product.id}`} key={product.id} className="product-card" style={{ width: '300px'}}>
+              <div className="product-card">
+              <Link href={`/product/${product.id}`} key={product.id} style={{ width: '300px'}}>
                 <div style={{ position: 'relative' }}>
                   <center><img src={product.images[0].url} alt={product.title} style={{ width: '70%', height: 'auto'}} /></center>
                   <span style={{ position: 'absolute', bottom: '5px', left: '5px', zIndex: '1', backgroundColor: '#EFEFF0', color:'#242528' }}><b>MOQ: {product.moq}</b></span>
@@ -61,7 +61,8 @@ export default function Home() {
                 <p><s>{product.highPricePretty}</s></p>
                 <p>{product.lowPricePretty}</p>
                 <p>{product.title}</p>
-              </a>
+              </Link>
+              </div>
             ))}
           </div>
         </div>
@@ -83,7 +84,7 @@ export default function Home() {
               justify-content: space-between;
               align-items: center;
               width: 90vw;
-              padding-right:160px;
+              padding-right:20px;
               padding-bottom:20px;
             }
             .brand-card {
@@ -122,10 +123,10 @@ export default function Home() {
             
             .ViewMore {
               margin-left: 10px;
+              color: #2A64DB;
             }
-            .ViewMore a {
+            .ViewMore Link {
               font-size: 14px;
-              color: blue;
             }
             .productCatalog{
               padding-left:80px;
@@ -134,7 +135,7 @@ export default function Home() {
             }
             .product-card {
               width: 200px;
-              height: 330px;
+              height: 300px;
               margin-right: 10px;
               margin-bottom: 10px;
               padding: 10px;

@@ -1,4 +1,3 @@
-import Header from "@/components/header-bar";
 import useSWR from 'swr';
 import React from 'react';
 
@@ -8,8 +7,8 @@ export default function AllBrands(){
     const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
     if (brandError) return <div>Failed to load</div>;
     if (!brands) return <div>Loading...</div>;
-    return (<div>
-    <Header/>
+    return (
+    <div>
     <div className='content'>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {alphabet.map((letter) => {

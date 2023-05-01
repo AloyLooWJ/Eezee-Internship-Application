@@ -7,9 +7,10 @@
 To run this project locally, follow these steps:
 
 1. Clone the repo: `git clone https://github.com/AloyLooWJ/Eezee-Internship-Application`
-2. Go into the eezee directory: `cd .\eezee\`
-3. Install dependencies: `npm install`
-4. Start the app: `npm run dev`
+2. Install dependencies: `npm install`
+3. Go into the eezee directory: `cd .\eezee\`
+4. Install dependencies: `npm install`
+5. Start the app: `npm run dev`
 
 ## Navigation
 1. Navigate to the homepage at `http://localhost:3000`

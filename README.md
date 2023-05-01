@@ -18,7 +18,7 @@ To run this project locally, follow these steps:
 4. Navigate to the Product page by clicking on a specific product listed in the "Our Products" from the homepage or product catalog page
 5. Navigate back to the homepage by clicking on the eezee logo on the header bar
 
-##Features
+## Features
 1. Able to add to cart with different quantity
 2. Able to persist cart quantity across all pages
 3. Able to redirect to Product Page

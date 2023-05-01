@@ -1,22 +1,34 @@
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { CartContext } from './cart-context';
 
 const Header = () => {
     const { cartData } = useContext(CartContext);
+    // Keep track of quantity of items in the cart
     const totalQuantity = cartData.reduce((total, item) => total + item.quantity, 0);
+    // Keep track of total price of items in the cart
     const totalPrice = cartData.reduce((total, item) => total + Number(item.totalPrice), 0);   
-    const { updateCartData  } = useContext(CartContext);         
+    const { updateCartData  } = useContext(CartContext);
+    
+    // Function to remove specific item from cart
+    const removeItemFromCart = (index) => {
+      const updatedCartData = [...cartData];
+      updatedCartData.splice(index, 1);
+      updateCartData(updatedCartData);
+    };
       
   return (
     <div>
+        {/* Start of top nav bar */}
         <div className='topBar'>
         <img className ='barImg' src="https://storage.googleapis.com/eezee-storage/flags/SG.png"></img>
         Singapore
         <img className ='barImg' src="https://storage.googleapis.com/imgez/icons/phone-icon-grey-secondary.svg"></img>
         +65 6797 9688
         </div>
+        {/* End of top nav bar */}
+
+        {/* Start of 2nd top nav bar */}
         <div style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'borderBottomWidth': '2px'}}>
             <div style={{'flexDirection': 'column', 'justifyContent': 'space-between', 'alignItems': 'center', 'height': '100px', 'padding-left':'80px'}}>
                 <div style={{'display': 'flex', 'alignItems': 'center'}}>
@@ -41,32 +53,36 @@ const Header = () => {
                     <div className="dropdown-content">
                         {cartData && cartData.length > 0 ? (
                         <ul>
-                            {cartData.map((item, index) => (
-                            <li key={index}>
-                                <img className="itemImg" src={item.productImg} />
-                                <div className="itemDetails">
-                                <div className="productName">{item.product}</div>
-                                <div className="price">
-                                    {item.quantity} x {parseFloat(item.unitPrice).toFixed(2)} = {item.totalPrice}
-                                </div>
-                                </div>
-                            </li>
-                            ))}
-                            <li className='totalPrice'>
-                                Total Price: ${totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                            </li>
-                            <li>
-                                <button onClick={() => updateCartData([])}>Clear Cart</button>
-                            </li>
+                          <li>
+                              <button className='clearCart' onClick={() => updateCartData([])}><u>Clear Cart</u></button>
+                          </li>
+                          <div className='itemSegment'>
+                          {cartData.map((item, index) => (
+                          <li className='cartItem' key={index}>
+                              <img className="itemImg" src={item.productImg} />
+                              <div className="itemDetails">
+                              <div className="productName">{item.product}</div>
+                              <div className="price">
+                                  {item.quantity} x {parseFloat(item.unitPrice).toFixed(2)} = {item.totalPrice}
+                              </div>
+                              <button onClick={() => removeItemFromCart(index)}><img className="removeBtn" src="https://cdn-icons-png.flaticon.com/512/401/401036.png" alt="Remove item"/></button>
+                              </div>
+                          </li>
+                          ))}
+                          </div>
+                          <li className='totalPrice'>
+                              Total Price: ${totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                          </li>
+                          <div><center><button className='checkOut'>Checkout</button></center></div>
                         </ul>
                         ) : (
-                        <p>Your shopping cart is empty.</p>
+                        <center><p>Your shopping cart is empty.</p></center>
                         )}
                     </div>
                 </div>
             </div>
             {/* End of shopping cart */}
-
+          {/* End of 2nd top nav bar */}
         </div>
 
         <style jsx>{`
@@ -111,7 +127,7 @@ const Header = () => {
                 min-width: 160px;
                 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
                 padding: 12px 16px;
-                width:400px;
+                width:450px;
               }
               .dropdown:hover .dropdown-content {
                 display: block;
@@ -165,6 +181,45 @@ const Header = () => {
                 font-size:20px;
                 color: #2A64DB;
                 border-bottom: 1px solid #2A64DB;
+              }
+              .clearCart{
+                color: red;
+                margin-left: 340px;
+                margin-bottom: 10px;
+              }
+              .cartItem{
+                border: 1px solid #ccc;
+                margin-bottom:10px;
+              }
+              .itemSegment{
+                max-height: 300px;
+                overflow-y: auto;
+                border: 1px solid #ccc;
+                padding:10px;
+              }
+              .itemSegment::-webkit-scrollbar {
+                width: 0;
+                background-color: transparent;
+              }
+              .removeBtn{
+                height:20px;
+                width:20px;
+                display: inline-block; 
+                float: right; 
+                margin-right: 10px;
+                border: 1px solid red;
+              }
+              .checkOut {
+                background-color: #2A64DB;
+                width: 391px;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                border: 1px solid #ccc;
+                margin-top: 10px;
+                margin-bottom: 10px;
               }
         `}</style>
     </div>

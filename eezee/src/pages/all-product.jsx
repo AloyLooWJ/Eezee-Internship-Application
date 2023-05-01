@@ -10,12 +10,15 @@ export default function AllProduct(){
         setSelectedButton(event.target.value);
         switch (event.target.value) {
             case 'relevance':
+                // Reset sorted products to default order
                 setSortedProducts([]);
                 break;
             case 'high-to-low':
+                // Sorts products based on low price in descending order
                 setSortedProducts([...products].sort((a, b) => b.lowPrice - a.lowPrice));
                 break;
             case 'low-to-high':
+                // Sorts products based on low price in ascending order
                 setSortedProducts([...products].sort((a, b) => a.lowPrice - b.lowPrice));
                 break;
             default:
@@ -23,7 +26,6 @@ export default function AllProduct(){
         }
     }
     
-
     const displayedProducts = sortedProducts.length > 0 ? sortedProducts : products;
     if (productError) return <div>Failed to load</div>;
     if (!products) return <div>Loading...</div>;
@@ -37,6 +39,7 @@ export default function AllProduct(){
             </div>
             <div className="col2">
                 <h2>Page 1 of about {displayedProducts.length} results</h2>
+                {/* Sort products buttons */}
                 <div className="btn-group">
                     <button
                         className={selectedButton === 'relevance' ? 'selected' : ''}
@@ -60,15 +63,29 @@ export default function AllProduct(){
                         Price: Low to High
                     </button>
                 </div>
+                {/* Start of product catalog */}
                 <div className='productCatalog'>
                     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'left', textAlign: 'center' }}>
                         {displayedProducts.map(product => (
                         <a href={`/product/${product.id}`} key={product.id} className="product-card" style={{ width: '300px'}}>
                             <div style={{ position: 'relative' }}>
                             <center><img src={product.images[0].url} alt={product.title} style={{ width: '70%', height: 'auto'}} /></center>
-                            <span style={{ position: 'absolute', bottom: '5px', left: '5px', zIndex: '1', backgroundColor: '#EFEFF0', color:'#242528' }}><b>MOQ: {product.moq}</b></span>
-                  {product.vipPriceFlag && <span style={{ position: 'absolute', bottom: '55px', left: '5px', zIndex: '1', backgroundColor: '#DBE5FA', color:'#1E4DAF' }}><b>VIP Price</b></span>}
-                  {product.bulkDiscountFlag && <span style={{ position: 'absolute', bottom: '30px', left: '5px', zIndex: '1', backgroundColor: '#FFE69C', color:'#6A5001' }}><b>Bulk Discount</b></span>}
+
+                            {/* Product Tags */}
+                            <span className='moq'>
+                                <b>MOQ: {product.moq}</b>
+                            </span>
+
+                            {product.vipPriceFlag && 
+                            <span className='vip'>
+                                <b>VIP Price</b>
+                            </span>}
+
+                            {product.bulkDiscountFlag && 
+                            <span className='bulk'>
+                                <b>Bulk Discount</b>
+                            </span>}
+
                             </div>
                             <p><s>{product.highPricePretty}</s></p>
                             <p>{product.lowPricePretty}</p>
@@ -76,7 +93,8 @@ export default function AllProduct(){
                         </a>
                         ))}
                     </div>
-                    </div>
+                </div>
+                {/* End of product catalog */}
             </div>
         </div>
         <style jsx>{`
@@ -132,6 +150,39 @@ export default function AllProduct(){
                 background-color: #919494;
                 color: white;
             }
+            .moq {
+                position: absolute;
+                bottom: 0px;
+                left: 5px;
+                z-index: 1;
+                background-color: #EFEFF0;
+                color: #242528;
+                font-size: 13px;
+                padding:2px;
+                border: 1px solid #ccc;
+              }
+              .vip {
+                position: absolute;
+                bottom: 50px;
+                left: 5px;
+                z-index: 1;
+                background-color: #DBE5FA;
+                color: #1E4DAF;
+                font-size: 13px;
+                padding:2px;
+                border: 1px solid #ccc;
+              }
+              .bulk {
+                position: absolute;
+                bottom: 25px;
+                left: 5px;
+                z-index: 1;
+                background-color: #FFE69C;
+                color: #6A5001;
+                font-size: 13px;
+                padding:2px;
+                border: 1px solid #ccc;
+              }
         `}</style>
     </div>
     )

@@ -39,6 +39,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        {/* End of featured Brands catalog */}
 
         {/* Start of product catalog */}
         <div className='productCatalog'>
@@ -54,9 +55,21 @@ export default function Home() {
               <Link href={`/product/${product.id}`} key={product.id} style={{ width: '300px'}}>
                 <div style={{ position: 'relative' }}>
                   <center><img src={product.images[0].url} alt={product.title} style={{ width: '70%', height: 'auto'}} /></center>
-                  <span style={{ position: 'absolute', bottom: '5px', left: '5px', zIndex: '1', backgroundColor: '#EFEFF0', color:'#242528' }}><b>MOQ: {product.moq}</b></span>
-                  {product.vipPriceFlag && <span style={{ position: 'absolute', bottom: '55px', left: '5px', zIndex: '1', backgroundColor: '#DBE5FA', color:'#1E4DAF' }}><b>VIP Price</b></span>}
-                  {product.bulkDiscountFlag && <span style={{ position: 'absolute', bottom: '30px', left: '5px', zIndex: '1', backgroundColor: '#FFE69C', color:'#6A5001' }}><b>Bulk Discount</b></span>}
+                  <span className='moq'>
+                    <b>MOQ: {product.moq}
+                    </b>
+                  </span>
+
+                  {product.vipPriceFlag && 
+                  <span className='vip'>
+                    <b>VIP Price</b>
+                  </span>}
+
+                  {product.bulkDiscountFlag && 
+                  <span className='bulk'>
+                    <b>Bulk Discount</b>
+                  </span>}
+                  
                 </div>
                 <p><s>{product.highPricePretty}</s></p>
                 <p>{product.lowPricePretty}</p>
@@ -66,6 +79,7 @@ export default function Home() {
             ))}
           </div>
         </div>
+        {/* End of product catalog */}
       </div>
       <style jsx>{`
             .content {
@@ -145,6 +159,39 @@ export default function Home() {
               position: relative;
               display: inline-block;
               background: white;
+            }
+            .moq {
+              position: absolute;
+              bottom: 0px;
+              left: 5px;
+              z-index: 1;
+              background-color: #EFEFF0;
+              color: #242528;
+              font-size: 13px;
+              padding:2px;
+              border: 1px solid #ccc;
+            }
+            .vip {
+              position: absolute;
+              bottom: 50px;
+              left: 5px;
+              z-index: 1;
+              background-color: #DBE5FA;
+              color: #1E4DAF;
+              font-size: 13px;
+              padding:2px;
+              border: 1px solid #ccc;
+            }
+            .bulk {
+              position: absolute;
+              bottom: 25px;
+              left: 5px;
+              z-index: 1;
+              background-color: #FFE69C;
+              color: #6A5001;
+              font-size: 13px;
+              padding:2px;
+              border: 1px solid #ccc;
             }
         `}</style>
     </div>

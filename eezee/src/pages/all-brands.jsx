@@ -4,21 +4,27 @@ import React from 'react';
 export default function AllBrands(){
     const fetcher = (url) => fetch(url).then((res) => res.json());
     const { data: brands, error: brandError } = useSWR('/api/brands-data', fetcher);
+    // Array to contain all alphabets for reference when sorting brand names
     const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
     if (brandError) return <div>Failed to load</div>;
     if (!brands) return <div>Loading...</div>;
     return (
     <div>
     <div className='content'>
+    {/* Start of all brands display */}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {alphabet.map((letter) => {
+          // Compares the first letter of brand name to alphabet
           const letterBrands = brands.filter((brand) => brand.name[0] === letter);
+          // If brand starting with letter doesnt exist, skip to next letter in alphabet array
           if (letterBrands.length === 0) {
             return null;
           }
           return (
             <div key={letter}>
+              {/* Letter Header */}
               <h1><b>{letter.toUpperCase()}</b></h1>
+              {/* Map brands to letter */}
               <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', gap: '20px' }}>
                 {letterBrands.map((brand) => (
                   <div key={brand.id} className="brand-card">
@@ -38,6 +44,7 @@ export default function AllBrands(){
           );
         })}
       </div>
+      {/* End of all brands display */}
     </div>
     <style jsx>{`
             .content {

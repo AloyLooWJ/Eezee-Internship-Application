@@ -10,7 +10,9 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Product(){
   const router = useRouter()
+  // Get product ID from router
   const {product} = router.query
+  // Fetch data from JSON file
   const { data: products, error: productError } = useSWR('/api/product-data', fetcher);
   const { updateCartData  } = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
@@ -18,12 +20,15 @@ export default function Product(){
   if (productError) return <div>Failed to load</div>;
   if (!products) return <div>Loading...</div>;
   
+  // Search through the JSON data to retrieve product data with specified product ID
   const productData = products.find(p => p.id === product);
 
+  // Handle quantity when quantity picker value is changed
   const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
   }
 
+  // Send data from product to cart when Add to cart button is clicked
   const submitAddToCart = (e) => {
     e.preventDefault();
     const data = {

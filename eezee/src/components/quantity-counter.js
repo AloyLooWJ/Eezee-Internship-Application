@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
+// Handle quantity change when users change the quantity from product page
 function quantityCounter({quantity , onQuantityChange}) {
 
   const handleDecrement = () => {

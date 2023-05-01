@@ -1,10 +1,12 @@
 import { createContext, useState } from 'react';
 
+// Create context object to allow cart data to persist across pages
 export const CartContext = createContext({
   cartData: [],
   updateCartData: () => {},
 });
 
+// Set initial cart as empty array. Update cart whenever an item is added.
 export const CartProvider = ({ children }) => {
   const [cartData, setCartData] = useState([]);
 
